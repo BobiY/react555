@@ -3,4 +3,5 @@ body {
   display: -ms-flexbox;
   display: flex;
   background-color: red;
+  font: 12px;
 }

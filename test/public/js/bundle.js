@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "b05654df5720bee6f930"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "5beabc178897407368de"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotMainModule = true; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -22365,7 +22365,13 @@ var App = function (_Component) {
 			return _react2.default.createElement(
 				"div",
 				null,
-				"dsdads"
+				_react2.default.createElement(
+					"h1",
+					null,
+					"88888888888888"
+				),
+				_react2.default.createElement("input", { type: "text" }),
+				_react2.default.createElement("input", { type: "text" })
 			);
 		}
 	}]);

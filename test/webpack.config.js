@@ -13,7 +13,7 @@ module.exports = {
 	//输出文件地址及其名字
 	output:{
 		path:path.join(__dirname,"public/js"),
-        filename:"bundle.js" 
+    filename:"bundle.js"
 	},
 	//loader配置
 	module:{
@@ -64,10 +64,14 @@ module.exports = {
 	},
 	//webpack服务器配置
 	devServer:{
-       contentBase: path.join(__dirname, 'public'),
-       historyApiFallback: true,
-       hot: true,
-       port:3000
+        contentBase: __dirname + "/public",
+        stats: {
+            colors: true
+        },
+        historyApiFallback:true,
+        inline:true,
+        port:3000,
+        hot:true
 	},
 	//使用的插件配置
     plugins:[
