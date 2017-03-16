@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		#table{
+			border: 1px solid #333;
+			transition: 0.5s;
+		}
+		#table th {
+			width: 30px;
+		}
+		#table td {
+			width: 30px;
+			text-align: center;
+			transition: 0.3s;
+			cursor: pointer;
+		}
+		.hui{
+			color: #666;
+		}
+		.current{
+			color :red;
+		}
+		.active{
+			color:orange;
+		}
+	</style>
+</head>
+<body>
+    <div id="tableBox"></div>
+</body>
+<script type="text/javascript" src = "jquery-3.1.1.min.js"></script>
+<script type="text/javascript">
+     createTable("#tableBox");
+    $("#btn").click(function(){
+    	var yea = parseInt($(".year").val());
+    	var yue = parseInt($(".yue").val());
+    	var arr = [1];
+    	arr.unshift(yue);
+    	arr.unshift(yea);
+    	$("#table").hide();
+    	var date = new Date(arr);
+
+	//判断是不是闰年
+	function year(years) {
+		return ( (years%4 == 0) && (years/100 != 0) ) ? 1 : 0;
+	};
+	//表示月份天数的数组
+    monthDay = [31,28+year(date.getFullYear()),31,30,31,30,31,31,30,31,30,31];
+    //日历固定显示6排；
+    var pai = 6;
+    //当前月份的天数；
+    var day = monthDay[date.getMonth()];
+    //上个月的天数；
+    var dayLast = monthDay[date.getMonth()-1];
+    //拼接的字符串
+    var str = "";
+    //天数技术变量
+    var count = 0;
+    //表示当前是星期几
+    var time = 0;
+    //控制时间什么时候从一开始
+    var onoff = false;
+    //控制下个月的天数显示成灰色
+    var hui = "";
+    //如果当前月的前一个月是二月，要进行天数处理
+    if(date.getMonth()-1 === 1){
+    	dayLast = dayLast + 2;
+    }
+    //根据第一天是周几来给天来赋值
+    if(date.getMonth() === 0){
+       dayLast = monthDay[monthDay.length-1];
+    }
+    if (date.getDay() ===0 ) {
+    	time = 7;
+    	count = dayLast + time;
+    }else{
+    	time = date.getDay();
+    	count = dayLast + time;
+    }
+    //循环获得日历表格
+    for (var i = 0; i < pai; i++){
+    	if(i == 0){
+    		str +="<tr>" 
+    	}else{
+    		str +="</tr><tr>" 
+    	}
+    	for (var j = 0; j <=6; j++) {
+    		count++
+    		if(count >= (dayLast+time) && count<=(dayLast+time*2)){
+    			  if(date.getMonth()-1 === 1){
+    			  	str +="<td class = 'hui'>"+ (count - 2 - time*2) +"</td>" 
+    			  }else{
+    			  	//console.log(count);
+    			  	str +="<td class = 'hui'>"+ (count-(time*2)) +"</td>" 
+    			  }
+    		}else{
+    		     if(count > day && onoff ){
+                    hui = "hui";
+                    onoff = false;
+    		     } 
+    		     if(count <= day){
+	    			if(!hui && currentTime(date.getFullYear(),date.getMonth(),count)){
+	    				var str1 = currentTime(date.getFullYear(),date.getMonth(),count)
+                		str +="<td class = "+ str1 +">"+ count +"</td>";
+                	}else{
+                        str +="<td class = "+ hui +">"+ count +"</td>";
+                	}
+    		     }else{
+                	onoff = true;
+                	count = 1;
+                	if(!hui && currentTime(date.getFullYear(),date.getMonth(),count)){
+                		str +="<td class = "+ currentTime(date.getFullYear(),date.getMonth(),count) +">"+ count +"</td>";
+                	}else{
+                        str +="<td class = "+ hui +">"+ count +"</td>";
+                	}
+    		     }
+    	    }
+    
+        };
+    };
+	    //最终获得的表格
+	    str +="</tr>";
+	    //将表格渲染到页面
+	    $("#table tbody").html(str);
+	    $("#table").show();
+    })
+    function currentTime(year,yue,date){
+    	var currentDate = new Date();
+    	var objCurrent = {
+    		year:currentDate.getFullYear(),
+    		yue:currentDate.getMonth(),
+    		date:currentDate.getDate()
+    	}; 
+    	if((year === objCurrent.year) && (yue === objCurrent.yue) && (date === objCurrent.date) ){
+    		var str2 = "current"
+            return str2;
+    	}else{
+    		var str3 = ""
+    		return str3;
+    	}
+
+    }
+    $("tbody").delegate("td","click",function(){
+    	$("td.active").removeClass("active");
+    	$(this).addClass("active");
+    	console.log($(this).index());
+    });
+    //创建表格
+    function createTable(select){
+    	var ele = select;
+    	var table = $("<table id = 'table'></table>");
+    	var thead = $("<thead></thead>");
+    	var tbody = $("<tbody></tbody>");
+    	var thStr = "<tr><th>日</th><th>一</th><th>二</th><th>三</th><th>四</th><th>五</th><th>六</th></tr>";
+    	thead.html(thStr);
+    	table.append(thead);
+    	table.append(tbody);
+    	var div = creatCheck();
+        $(select).append(div);
+    	$(select).append(table);
+    }
+    function  creatCheck(){
+    	var div = $("<div class = 'box'></div>");
+    	var year = $('<input class="year" type="number" />');
+    	var yue = $('<input class="yue" type="number" />');
+    	var btn = $('<button id="btn">查询</button>');
+        div.append(year);
+        div.append(yue);
+        div.append(btn);
+        return div;
+    }
+    </script>
+</html>
